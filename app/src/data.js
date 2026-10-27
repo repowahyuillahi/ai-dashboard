@@ -80,19 +80,19 @@ export const PROPERTIES = [
     palette: { sky: ['#EDE3D1', '#FBF7EE'], sun: '#EFD29B', main: '#78654A', side: '#A08B6D', windows: ['#F2C66D', '#4E4130'] },
   },
   {
-    name: 'Linden House', city: 'Berlin', occupancy: 90, revenue: '$2,415', units: '14/16', rating: '4.8',
+    name: 'Linden House', city: 'Berlin', occupancy: 85, revenue: '$1,520', units: '11/13', rating: '4.8',
     palette: { sky: ['#E2D8F3', '#F8F5FD'], sun: '#B79CED', main: '#6E5A9E', side: '#9A86C4', windows: ['#F2C66D', '#453664'] },
   },
   {
-    name: 'Harbor Point', city: 'Sydney', occupancy: 75, revenue: '$2,058', units: '12/16', rating: '4.7',
+    name: 'Harbor Point', city: 'Sydney', occupancy: 75, revenue: '$1,284', units: '9/12', rating: '4.7',
     palette: { sky: ['#D3EAF6', '#F5FBFE'], sun: '#8FD0F0', main: '#4E7A8C', side: '#83A7B5', windows: ['#F2C66D', '#31505E'] },
   },
   {
-    name: 'Olive Gardens', city: 'Athens', occupancy: 71, revenue: '$1,872', units: '15/21', rating: '4.6',
+    name: 'Olive Gardens', city: 'Athens', occupancy: 75, revenue: '$1,105', units: '9/12', rating: '4.6',
     palette: { sky: ['#DFEDD2', '#F8FCF3'], sun: '#AEE59A', main: '#6C8A52', side: '#97B07E', windows: ['#F2C66D', '#42592F'] },
   },
   {
-    name: 'Birch Studios', city: 'Oslo', occupancy: 84, revenue: '$1,459', units: '10/12', rating: '4.9',
+    name: 'Birch Studios', city: 'Oslo', occupancy: 64, revenue: '$895', units: '7/11', rating: '4.9',
     palette: { sky: ['#F2DAE6', '#FCF5F8'], sun: '#F2A0C4', main: '#8A5570', side: '#B18399', windows: ['#F2C66D', '#573647'] },
   },
 ]

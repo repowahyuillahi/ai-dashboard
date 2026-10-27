@@ -29,7 +29,7 @@ function useCountUp(target, duration = 1100) {
 }
 
 function MiniStat({ icon: Icon, label, target, format, index }) {
-  const value = useCountUp(target, 1000 + index * 120)
+  const value = useCountUp(target, 750 + index * 60)
   return (
     <motion.div
       initial={{ opacity: 0, y: 18 }}

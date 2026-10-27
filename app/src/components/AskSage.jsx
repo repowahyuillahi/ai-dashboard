@@ -70,36 +70,36 @@ const SEED_MESSAGES = [
   { from: 'user', text: 'How is occupancy looking this month?' },
   {
     from: 'sage',
-    text: 'Occupancy is at 92% across 48 units — up 3.1 pts from September. Two units are vacant: Harbor View 7C (12 days) and Maple Loft 2A (5 days).',
+    text: 'Occupancy is at 79% across your portfolio — 104 of 132 units booked. Ocean View Loft leads at 92%, while Olive Gardens (71%) has the most open nights right now.',
   },
   { from: 'user', text: 'And revenue?' },
   {
     from: 'sage',
-    text: 'Revenue is $48,290 so far in October, tracking 8% ahead of last month. Net profit today is $116.99 after a $96.25 HVAC repair.',
+    text: 'Properties brought in $14,474 this month. Wallet earnings are $10,842.74 against a $21,000 goal (35%), and net profit today is $116.99.',
   },
 ]
 
 function sageReply(q) {
   const s = q.toLowerCase()
   if (/(occup|vacant|empty|tenant|lease)/.test(s)) {
-    return 'Current occupancy is 92% (44 of 48 units filled). Harbor View 7C has been vacant the longest — 12 days. A $40/week price trim usually fills similar units in ~6 days.'
+    return 'Current occupancy is 79% — 104 of 132 units booked. Ocean View Loft is nearly full at 92% (11 of 12 units); Olive Gardens has the most room to grow at 71%.'
   }
   if (/(revenue|income|rent|earning|profit|money)/.test(s)) {
-    return 'October revenue is $48,290 (+8% vs last month). Biggest contributors: Harbor View ($13,940), Maple Loft ($11,205), and Sage Residences ($9,870). Net profit today: $116.99.'
+    return 'Properties earned $14,474 this month. Top earners: Ocean View Loft ($2,790), Maple Court ($2,660) and Cedar Heights ($2,236). Wallet earnings are $10,842.74 — 35% of the $21,000 goal, with profit 2% above last month.'
   }
   if (/(balance|cash|account|bank|card)/.test(s)) {
-    return 'Your operating balance is $12,480.32 across 3 cards. Incoming rent this week totals $1,090.00; outgoing utilities and maintenance total $216.75.'
+    return 'Your available balance is $34,101.94 (+5.6% in the last 30 days), across 3 cards held by Lana Steiner, Olivia Rhye and Phoenix Baker. Money in: $1,605.15 · money out: $892.80.'
   }
   if (/(propert|building|unit|portfolio|apartment)/.test(s)) {
-    return 'Your portfolio has 5 properties and 48 units: Harbor View, Maple Loft, Sage Residences, Cedar Court, and Birch House. Sage Residences performs best at 97% occupancy.'
+    return 'Your portfolio has 8 properties and 132 units: Ocean View Loft (Lisbon), Maple Court (Toronto), Cedar Heights (Denver), Palm Residency (Dubai), Linden House (Berlin), Harbor Point (Sydney), Olive Gardens (Athens) and Birch Studios (Oslo).'
   }
   if (/(mainten|repair|fix|hvac)/.test(s)) {
-    return 'There are 3 open maintenance tickets. The priciest is the HVAC repair at Harbor View 7C ($96.25, scheduled tomorrow). The other two are minor plumbing checks.'
+    return 'Recent vendor payments: AquaFix Plumbing took $185.00 for a repair at Palm Residency, and Carlos Brown III was paid $120.50 for cleaning. Nothing urgent is open right now.'
   }
   if (/(hi|hello|hey|halo)/.test(s)) {
-    return "Hello! Your portfolio is healthy today — 92% occupancy and revenue tracking 8% ahead. What would you like to dig into?"
+    return 'Hello! Your portfolio is steady today — 79% occupancy, $14,474 earned this month, and 230 new clients. What would you like to dig into?'
   }
-  return "Here's what I can see: occupancy 92%, October revenue $48,290, balance $12,480.32, and 3 open maintenance tickets. Ask me about any of those and I'll break it down."
+  return "Here's what I can see: occupancy 79% (104 of 132 units), $14,474 earned this month, wallet balance $34,101.94, and earnings at 35% of the $21,000 goal. Ask me about any of those and I'll break it down."
 }
 
 export function SagePanel({ onClose }) {

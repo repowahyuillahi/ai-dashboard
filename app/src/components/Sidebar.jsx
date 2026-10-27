@@ -58,7 +58,7 @@ export default function Sidebar({ page, onNavigate }) {
       initial={{ x: -24, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className="sticky top-[104px] flex max-h-[calc(100vh-128px)] w-[68px] shrink-0 flex-col items-center gap-[7px] overflow-visible rounded-full bg-white py-4 shadow-[0_16px_40px_rgba(96,100,84,0.10)]"
+      className="sticky top-[104px] z-40 flex max-h-[calc(100vh-128px)] w-[68px] shrink-0 flex-col items-center gap-[7px] overflow-visible rounded-full bg-white py-4 shadow-[0_16px_40px_rgba(96,100,84,0.10)]"
     >
       {NAV.map((item) => (
         <RailButton

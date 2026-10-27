@@ -89,10 +89,10 @@ function CardFace({ card, compact }) {
       </div>
       <div>
         <p
-          className="font-mono tracking-[0.14em]"
-          style={{ fontSize: compact ? 12.5 : 15, color: tone.color }}
+          className="whitespace-nowrap font-mono tracking-[0.06em]"
+          style={{ fontSize: compact ? 11 : 13.5, color: tone.color }}
         >
-          1234&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;{card.last4 ?? '1234'}
+          1234&nbsp;••••&nbsp;••••&nbsp;{card.last4 ?? '1234'}
         </p>
         <div className="mt-2 flex items-end justify-between" style={{ fontSize: compact ? 9.5 : 11 }}>
           <div>
