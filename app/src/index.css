@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #efeee9;
+  --color-sage: #5f7161;
+  --color-sage-2: #778873;
+  --color-ink: #1e2420;
+  --color-muted: #71766f;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Kartu dasar proyek: putih, sudut besar, bayangan lembut */
+.card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow:
+    0 1px 2px rgba(30, 36, 32, 0.04),
+    0 8px 24px rgba(30, 36, 32, 0.06);
+}
