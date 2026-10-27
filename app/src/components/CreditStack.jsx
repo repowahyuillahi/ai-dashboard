@@ -1,0 +1,157 @@
+// CreditStack — tumpukan 3 kartu kredit CSS 3D.
+// Hover: kartu mekar (fan out). Klik kartu: membawanya ke depan (urutan state + animasi layout framer-motion).
+// Tiap kartu digambar dengan div: gradien per tone, logo dua lingkaran Mastercard, nomor, nama pemegang.
+
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+
+const TONES = {
+  glass: {
+    background: 'linear-gradient(135deg, #FDFDFB 0%, #EDEEE8 55%, #DDE3D8 100%)',
+    color: '#1E2420',
+    sub: 'rgba(30,36,32,0.55)',
+    border: '1px solid rgba(30,36,32,0.08)',
+    shadow: '0 18px 36px rgba(30,36,32,0.16)',
+  },
+  sage: {
+    background: 'linear-gradient(135deg, #71826C 0%, #5F7161 55%, #4C5D4E 100%)',
+    color: '#FFFFFF',
+    sub: 'rgba(255,255,255,0.65)',
+    border: '1px solid rgba(255,255,255,0.12)',
+    shadow: '0 18px 36px rgba(95,113,97,0.4)',
+  },
+  black: {
+    background: 'linear-gradient(135deg, #343A36 0%, #1E2420 60%, #12150F 100%)',
+    color: '#FFFFFF',
+    sub: 'rgba(255,255,255,0.55)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    shadow: '0 18px 36px rgba(18,21,15,0.45)',
+  },
+}
+
+const DEFAULT_CARDS = [
+  { holder: 'A. Whitmore', last4: '4291', exp: '09/28', tone: 'black' },
+  { holder: 'A. Whitmore', last4: '8834', exp: '04/27', tone: 'sage' },
+  { holder: 'A. Whitmore', last4: '1234', exp: '12/26', tone: 'glass' },
+]
+
+// Pose tumpukan per "kedalaman" (0 = paling depan)
+const STACK_POSE = [
+  { rotate: 0, x: 0, y: 0, scale: 1 },
+  { rotate: -7, x: -14, y: -13, scale: 0.97 },
+  { rotate: 6, x: 13, y: -24, scale: 0.94 },
+]
+// Pose saat hover: mekar seperti kipas
+const FAN_POSE = [
+  { rotate: 0, x: 0, y: 8, scale: 1 },
+  { rotate: -11, x: -30, y: -16, scale: 0.97 },
+  { rotate: 10, x: 28, y: -30, scale: 0.94 },
+]
+
+function MastercardLogo({ light }) {
+  return (
+    <svg width="38" height="24" viewBox="0 0 38 24" aria-hidden="true">
+      <circle cx="14" cy="12" r="9" fill="#EB001B" />
+      <circle cx="24" cy="12" r="9" fill="#F79E1B" fillOpacity="0.9" />
+      <path
+        d="M19 4.6a9 9 0 0 1 0 14.8 9 9 0 0 1 0-14.8Z"
+        fill="#FF5F00"
+        opacity={light ? 0.95 : 0.9}
+      />
+    </svg>
+  )
+}
+
+function CardFace({ card, compact }) {
+  const tone = TONES[card.tone] ?? TONES.glass
+  return (
+    <div
+      className="flex h-full w-full flex-col justify-between rounded-2xl"
+      style={{
+        background: tone.background,
+        color: tone.color,
+        border: tone.border,
+        boxShadow: tone.shadow,
+        padding: compact ? 14 : 18,
+      }}
+    >
+      <div className="flex items-start justify-between">
+        <div
+          className="rounded-md"
+          style={{
+            width: compact ? 30 : 36,
+            height: compact ? 21 : 26,
+            background: 'linear-gradient(135deg,#F3D27A,#D9A93F)',
+            boxShadow: 'inset 0 0 0 1px rgba(120,84,10,0.35)',
+          }}
+        />
+        <MastercardLogo light={card.tone !== 'glass'} />
+      </div>
+      <div>
+        <p
+          className="font-mono tracking-[0.14em]"
+          style={{ fontSize: compact ? 12.5 : 15, color: tone.color }}
+        >
+          1234&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;{card.last4 ?? '1234'}
+        </p>
+        <div className="mt-2 flex items-end justify-between" style={{ fontSize: compact ? 9.5 : 11 }}>
+          <div>
+            <p style={{ color: tone.sub, fontSize: compact ? 7.5 : 8.5, letterSpacing: '0.12em' }}>
+              CARD HOLDER
+            </p>
+            <p className="font-semibold uppercase tracking-wide">{card.holder}</p>
+          </div>
+          <div className="text-right">
+            <p style={{ color: tone.sub, fontSize: compact ? 7.5 : 8.5, letterSpacing: '0.12em' }}>
+              EXPIRES
+            </p>
+            <p className="font-semibold">{card.exp ?? '12/26'}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function CreditStack({ cards = DEFAULT_CARDS, compact = false, className = '' }) {
+  const [order, setOrder] = useState(() => cards.map((_, i) => i)) // index kartu, depan → belakang
+  const [hover, setHover] = useState(false)
+  const W = compact ? 218 : 272
+  const H = compact ? 138 : 172
+
+  const bringToFront = (cardIdx) =>
+    setOrder((prev) => [cardIdx, ...prev.filter((i) => i !== cardIdx)])
+
+  return (
+    <div
+      className={`relative mx-auto ${className}`}
+      style={{ width: W, height: H + 34, perspective: 900 }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      {order.map((cardIdx, depth) => {
+        const pose = (hover ? FAN_POSE : STACK_POSE)[Math.min(depth, 2)]
+        return (
+          <motion.button
+            key={cardIdx}
+            type="button"
+            onClick={() => bringToFront(cardIdx)}
+            animate={{
+              rotate: pose.rotate,
+              x: pose.x,
+              y: pose.y,
+              scale: pose.scale,
+            }}
+            transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+            whileTap={{ scale: 0.98 }}
+            className="absolute left-0 top-7 cursor-pointer text-left"
+            style={{ width: W, height: H, zIndex: 10 - depth, transformOrigin: '50% 90%' }}
+            aria-label={`Kartu berakhiran ${cards[cardIdx].last4} — klik untuk ke depan`}
+          >
+            <CardFace card={cards[cardIdx]} compact={compact} />
+          </motion.button>
+        )
+      })}
+    </div>
+  )
+}
