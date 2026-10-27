@@ -22,7 +22,7 @@ import {
 
 export const DEFAULT_ITEMS = [
   { id: 'page-overview', type: 'Page', label: 'Overview', hint: 'Dashboard home', icon: LayoutDashboard, keywords: 'home main dashboard' },
-  { id: 'page-properties', type: 'Page', label: 'Properties', hint: '5 buildings · 48 units', icon: Building2, keywords: 'buildings units portfolio' },
+  { id: 'page-properties', type: 'Page', label: 'Properties', hint: '8 buildings · 132 units', icon: Building2, keywords: 'buildings units portfolio' },
   { id: 'page-tenants', type: 'Page', label: 'Tenants', hint: '44 active leases', icon: Users, keywords: 'renters leases people' },
   { id: 'page-calendar', type: 'Page', label: 'Calendar', hint: 'Visits & deadlines', icon: Calendar, keywords: 'schedule visits rent due' },
   { id: 'page-finance', type: 'Page', label: 'Finance', hint: 'Balance & payouts', icon: Wallet, keywords: 'money balance revenue payments cards' },
@@ -32,7 +32,7 @@ export const DEFAULT_ITEMS = [
   { id: 'prop-sage', type: 'Property', label: 'Sage Residences', hint: '10 units · 97% occupied', icon: Home, keywords: 'sage residences apartment' },
   { id: 'act-ask-sage', type: 'Action', label: 'Ask Sage AI', hint: 'Chat with your copilot', icon: Sparkles, keywords: 'ai chat assistant ask' },
   { id: 'act-add-payment', type: 'Action', label: 'Record a payment', hint: 'Log incoming rent', icon: CreditCard, keywords: 'add payment income rent transaction' },
-  { id: 'act-revenue', type: 'Action', label: 'View revenue report', hint: 'October · $48,290', icon: TrendingUp, keywords: 'report analytics revenue chart' },
+  { id: 'act-revenue', type: 'Action', label: 'View revenue report', hint: 'This month · $14,474', icon: TrendingUp, keywords: 'report analytics revenue chart' },
 ]
 
 export default function CommandPalette({ open = false, onClose, onSelect, items = DEFAULT_ITEMS }) {
