@@ -70,7 +70,7 @@ const SEED_MESSAGES = [
   { from: 'user', text: 'How is occupancy looking this month?' },
   {
     from: 'sage',
-    text: 'Occupancy is at 79% across your portfolio — 104 of 132 units booked. Ocean View Loft leads at 92%, while Olive Gardens (71%) has the most open nights right now.',
+    text: 'Occupancy is at 79% across your portfolio — 104 of 132 units booked. Ocean View Loft leads at 92%, while Birch Studios (64%) has the most open nights right now.',
   },
   { from: 'user', text: 'And revenue?' },
   {
@@ -82,7 +82,7 @@ const SEED_MESSAGES = [
 function sageReply(q) {
   const s = q.toLowerCase()
   if (/(occup|vacant|empty|tenant|lease)/.test(s)) {
-    return 'Current occupancy is 79% — 104 of 132 units booked. Ocean View Loft is nearly full at 92% (11 of 12 units); Olive Gardens has the most room to grow at 71%.'
+    return 'Current occupancy is 79% — 104 of 132 units booked. Ocean View Loft is nearly full at 92% (11 of 12 units); Birch Studios has the most room to grow at 64%.'
   }
   if (/(revenue|income|rent|earning|profit|money)/.test(s)) {
     return 'Properties earned $14,474 this month. Top earners: Ocean View Loft ($2,790), Maple Court ($2,660) and Cedar Heights ($2,236). Wallet earnings are $10,842.74 — 35% of the $21,000 goal, with profit 2% above last month.'
