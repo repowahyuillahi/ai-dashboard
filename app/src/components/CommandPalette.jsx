@@ -21,18 +21,18 @@ import {
 } from 'lucide-react'
 
 export const DEFAULT_ITEMS = [
-  { id: 'page-overview', type: 'Page', label: 'Overview', hint: 'Dashboard home', icon: LayoutDashboard, keywords: 'home main dashboard' },
-  { id: 'page-properties', type: 'Page', label: 'Properties', hint: '8 buildings · 132 units', icon: Building2, keywords: 'buildings units portfolio' },
-  { id: 'page-tenants', type: 'Page', label: 'Tenants', hint: '44 active leases', icon: Users, keywords: 'renters leases people' },
-  { id: 'page-calendar', type: 'Page', label: 'Calendar', hint: 'Visits & deadlines', icon: Calendar, keywords: 'schedule visits rent due' },
-  { id: 'page-finance', type: 'Page', label: 'Finance', hint: 'Balance & payouts', icon: Wallet, keywords: 'money balance revenue payments cards' },
-  { id: 'page-settings', type: 'Page', label: 'Settings', hint: 'Workspace preferences', icon: Settings, keywords: 'preferences account profile' },
-  { id: 'prop-harbor', type: 'Property', label: 'Harbor View Residences', hint: '18 units · 94% occupied', icon: Home, keywords: 'harbor view apartment' },
-  { id: 'prop-maple', type: 'Property', label: 'Maple Loft', hint: '12 units · 91% occupied', icon: Home, keywords: 'maple loft apartment' },
-  { id: 'prop-sage', type: 'Property', label: 'Sage Residences', hint: '10 units · 97% occupied', icon: Home, keywords: 'sage residences apartment' },
-  { id: 'act-ask-sage', type: 'Action', label: 'Ask Sage AI', hint: 'Chat with your copilot', icon: Sparkles, keywords: 'ai chat assistant ask' },
-  { id: 'act-add-payment', type: 'Action', label: 'Record a payment', hint: 'Log incoming rent', icon: CreditCard, keywords: 'add payment income rent transaction' },
-  { id: 'act-revenue', type: 'Action', label: 'View revenue report', hint: 'This month · $14,474', icon: TrendingUp, keywords: 'report analytics revenue chart' },
+  { id: 'page-home', type: 'Page', label: 'Home', hint: 'Hey, Codexr! · dashboard', page: 'home', icon: LayoutDashboard, keywords: 'home main dashboard overview' },
+  { id: 'page-wallet', type: 'Page', label: 'Wallet & transfers', hint: 'Balance $34,101.94', page: 'wallet', icon: Wallet, keywords: 'money balance cards transfers payments' },
+  { id: 'page-analytics', type: 'Page', label: 'Analytics', hint: 'Revenue & occupancy trends', page: 'analytics', icon: TrendingUp, keywords: 'chart report revenue trends' },
+  { id: 'page-properties', type: 'Page', label: 'Properties', hint: '8 buildings · 132 units', page: 'properties', icon: Building2, keywords: 'buildings units portfolio' },
+  { id: 'page-guests', type: 'Page', label: 'Guests', hint: 'People staying with you', page: 'guests', icon: Users, keywords: 'guests tenants people renters' },
+  { id: 'page-bookings', type: 'Page', label: 'Bookings', hint: 'Check-ins & check-outs', page: 'bookings', icon: Calendar, keywords: 'schedule calendar check-in checkout' },
+  { id: 'page-settings', type: 'Page', label: 'Settings', hint: 'Workspace preferences', page: 'settings', icon: Settings, keywords: 'preferences account profile security' },
+  { id: 'prop-ocean', type: 'Property', label: 'Ocean View Loft', hint: 'Lisbon · 92% occupied', page: 'properties', icon: Home, keywords: 'ocean view loft lisbon apartment' },
+  { id: 'prop-maple', type: 'Property', label: 'Maple Court', hint: 'Toronto · 79% occupied', page: 'properties', icon: Home, keywords: 'maple court toronto apartment' },
+  { id: 'prop-cedar', type: 'Property', label: 'Cedar Heights', hint: 'Denver · 89% occupied', page: 'properties', icon: Home, keywords: 'cedar heights denver apartment' },
+  { id: 'act-ask-sage', type: 'Action', label: 'Ask Sage AI', hint: 'Chat with your copilot', action: 'ask-sage', icon: Sparkles, keywords: 'ai chat assistant ask' },
+  { id: 'act-revenue', type: 'Action', label: 'View revenue report', hint: 'This month · $14,474', page: 'analytics', icon: TrendingUp, keywords: 'report analytics revenue chart' },
 ]
 
 export default function CommandPalette({ open = false, onClose, onSelect, items = DEFAULT_ITEMS }) {
