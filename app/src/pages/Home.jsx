@@ -35,9 +35,11 @@ function FloatingTile({ data, className = '' }) {
 }
 
 export default function Home({ onAskSage }) {
-  // Wadah halaman = batas seret orb; jarak seret dipakai membedakan seret vs klik.
+  // Wadah halaman = batas seret orb. Seret vs klik dibedakan dari posisi
+  // pointerdown tombol vs posisi klik (onDragEnd framer bisa datang terlambat
+  // setelah event klik, jadi tidak dipakai untuk menahan klik).
   const containerRef = useRef(null)
-  const dragDist = useRef(0)
+  const downPos = useRef(null)
   return (
     <div className="relative" ref={containerRef}>
       {/* Orb Sage besar + gelembung ucapan (ciri khas halaman Home di video).
@@ -52,22 +54,18 @@ export default function Home({ onAskSage }) {
         dragConstraints={containerRef}
         dragMomentum={false}
         dragElastic={0.08}
-        onDragStart={() => {
-          dragDist.current = 0
-        }}
-        onDragEnd={(_, info) => {
-          dragDist.current = Math.hypot(info.offset.x, info.offset.y)
-        }}
         className="absolute left-1/2 top-[300px] z-30 hidden -translate-x-1/3 cursor-grab touch-none active:cursor-grabbing xl:block"
         title="Seret untuk memindahkan, klik untuk membuka Sage"
       >
         <motion.button
           type="button"
-          onClick={() => {
-            if (dragDist.current > 6) {
-              dragDist.current = 0
-              return
-            }
+          onPointerDown={(e) => {
+            downPos.current = { x: e.clientX, y: e.clientY }
+          }}
+          onClick={(e) => {
+            const d = downPos.current
+            downPos.current = null
+            if (d && Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6) return
             onAskSage?.()
           }}
           animate={{ y: [0, -10, 0] }}

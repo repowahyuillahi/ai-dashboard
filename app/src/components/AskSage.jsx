@@ -34,25 +34,23 @@ export function SageOrb({ size = 44 }) {
 }
 
 export function OrbButton({ onClick, label = 'Ask Sage' }) {
-  // Jarak seret terakhir — klik yang mengakhiri seretan tidak boleh membuka panel.
-  const dragDist = useRef(0)
+  // Klik yang mengakhiri seretan tidak boleh membuka panel. Jarak diukur dari
+  // posisi pointerdown milik tombol sendiri vs posisi klik — onDragEnd
+  // framer bisa terlambat datang setelah event klik, jadi jangan andalkan dia.
+  const downPos = useRef(null)
   return (
     <motion.button
       type="button"
       drag
       dragMomentum={false}
       dragElastic={0.08}
-      onDragStart={() => {
-        dragDist.current = 0
+      onPointerDown={(e) => {
+        downPos.current = { x: e.clientX, y: e.clientY }
       }}
-      onDragEnd={(_, info) => {
-        dragDist.current = Math.hypot(info.offset.x, info.offset.y)
-      }}
-      onClick={() => {
-        if (dragDist.current > 6) {
-          dragDist.current = 0
-          return
-        }
+      onClick={(e) => {
+        const d = downPos.current
+        downPos.current = null
+        if (d && Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6) return
         onClick?.()
       }}
       whileHover={{ scale: 1.04 }}
