@@ -5,12 +5,13 @@ export default function MiniBars({
   data = [10, 16, 12, 20, 15, 24, 19],
   width = 76,
   height = 40,
-  color = '#5F7161',
-  fadedColor = '#C9D2C6',
+  color = 'var(--color-sage-900)',
+  fadedColor = 'var(--color-bars-faded)',
   fadeFrom = null,
   gap = 5,
   className = '',
 }) {
+  if (!data || data.length === 0) return null
   const max = Math.max(...data) || 1
   const barW = (width - gap * (data.length - 1)) / data.length
   const from = fadeFrom ?? Math.max(0, data.length - 2)
@@ -31,7 +32,7 @@ export default function MiniBars({
           <path
             key={i}
             d={`M${x},${height} L${x},${y + r} Q${x},${y} ${x + r},${y} L${x + barW - r},${y} Q${x + barW},${y} ${x + barW},${y + r} L${x + barW},${height} Z`}
-            fill={i >= from ? fadedColor : color}
+            style={{ fill: i >= from ? fadedColor : color }}
           />
         )
       })}

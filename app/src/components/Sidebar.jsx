@@ -1,13 +1,15 @@
 // Sidebar — rail pil vertikal putih melayang: ikon navigasi Lucide, state aktif
 // berupa lingkaran hitam penuh, tooltip pill hitam saat hover, avatar di dasar rail.
+// Tombol tema & Log out belum berfungsi di template ini: disabled + tooltip "soon".
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   LayoutGrid, Wallet, ChartColumn, Building2, Users, CalendarCheck,
-  Sun, Moon, Settings, LogOut,
+  Sun, Settings, LogOut,
 } from 'lucide-react'
 import AvatarMemoji from './AvatarMemoji'
+import { EASE } from '../lib/motion'
 
 const NAV = [
   { key: 'home', label: 'Home', icon: LayoutGrid },
@@ -18,21 +20,28 @@ const NAV = [
   { key: 'bookings', label: 'Bookings', icon: CalendarCheck },
 ]
 
-function RailButton({ icon: Icon, label, active, onClick }) {
+function RailButton({ icon: Icon, label, active, onClick, disabled = false }) {
   const [tip, setTip] = useState(false)
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={() => setTip(true)}
+      onMouseLeave={() => setTip(false)}
+    >
       <motion.button
         type="button"
         aria-label={label}
-        onClick={onClick}
-        onHoverStart={() => setTip(true)}
-        onHoverEnd={() => setTip(false)}
+        disabled={disabled}
+        onClick={disabled ? undefined : onClick}
         onFocus={() => setTip(true)}
         onBlur={() => setTip(false)}
-        whileTap={{ scale: 0.9 }}
+        whileTap={disabled ? undefined : { scale: 0.9 }}
         className={`flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-200 ${
-          active ? 'bg-[#1D1C1F] text-white shadow-[0_10px_20px_rgba(29,28,31,0.28)]' : 'text-[#6B7268] hover:bg-[#F0F0EA] hover:text-ink'
+          active
+            ? 'bg-black text-white shadow-[0_10px_20px_rgba(29,28,31,0.28)]'
+            : disabled
+              ? 'cursor-not-allowed text-icon-idle opacity-50'
+              : 'text-icon-idle hover:bg-line hover:text-ink'
         }`}
       >
         <Icon size={20} strokeWidth={active ? 2.2 : 1.9} />
@@ -42,7 +51,7 @@ function RailButton({ icon: Icon, label, active, onClick }) {
           initial={{ opacity: 0, x: -4 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.15 }}
-          className="pointer-events-none absolute left-[calc(100%+12px)] top-1/2 z-50 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#1D1C1F] px-2.5 py-1.5 text-[11.5px] font-semibold text-white shadow-lg"
+          className="pointer-events-none absolute left-[calc(100%+12px)] top-1/2 z-50 -translate-y-1/2 whitespace-nowrap rounded-lg bg-black px-2.5 py-1.5 text-[11.5px] font-semibold text-white shadow-lg"
         >
           {label}
         </motion.span>
@@ -52,12 +61,11 @@ function RailButton({ icon: Icon, label, active, onClick }) {
 }
 
 export default function Sidebar({ page, onNavigate }) {
-  const [dark, setDark] = useState(false)
   return (
     <motion.aside
       initial={{ x: -24, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.45, ease: EASE }}
       className="sticky top-[104px] z-40 flex max-h-[calc(100vh-128px)] w-[68px] shrink-0 flex-col items-center gap-[7px] overflow-visible rounded-full bg-white py-4 shadow-[0_16px_40px_rgba(96,100,84,0.10)]"
     >
       {NAV.map((item) => (
@@ -70,15 +78,10 @@ export default function Sidebar({ page, onNavigate }) {
         />
       ))}
       <div className="flex-1" />
-      <RailButton
-        icon={dark ? Moon : Sun}
-        label={dark ? 'Dark theme (soon)' : 'Light theme'}
-        active={false}
-        onClick={() => setDark((d) => !d)}
-      />
+      <RailButton icon={Sun} label="Theme (soon)" active={false} disabled />
       <RailButton icon={Settings} label="Settings" active={page === 'settings'} onClick={() => onNavigate('settings')} />
-      <RailButton icon={LogOut} label="Log out" active={false} onClick={() => {}} />
-      <div className="mt-1 rounded-full bg-[#F5EFE3] p-[3px]">
+      <RailButton icon={LogOut} label="Log out (soon)" active={false} disabled />
+      <div className="mt-1 rounded-full bg-sidebar-avatar p-[3px]">
         <AvatarMemoji size={40} />
       </div>
     </motion.aside>

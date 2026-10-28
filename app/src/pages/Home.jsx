@@ -12,13 +12,8 @@ import AvatarMemoji from '../components/AvatarMemoji'
 import BalanceChart from '../components/charts/BalanceChart'
 import Gauge from '../components/charts/Gauge'
 import { SageOrb } from '../components/AskSage'
+import { rise } from '../lib/motion'
 import { USER, HOME_STATS, BALANCE, EARNINGS, HOME_TRANSFERS, CARDS } from '../data'
-
-const rise = (i = 0) => ({
-  initial: { opacity: 0, y: 22 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay: 0.06 * i, ease: [0.22, 1, 0.36, 1] },
-})
 
 function FloatingTile({ data, className = '' }) {
   return (
@@ -29,7 +24,7 @@ function FloatingTile({ data, className = '' }) {
       </div>
       <span
         className={`ml-auto rounded-full px-2 py-1 text-[11px] font-bold ${
-          data.up ? 'bg-[#E3EDE2] text-[#4E7A5A]' : 'bg-[#F8E6E1] text-[#C65A4A]'
+          data.up ? 'bg-up-bg text-up-text' : 'bg-down-bg text-down-text'
         }`}
       >
         {data.delta}
@@ -83,8 +78,8 @@ export default function Home({ onAskSage }) {
             value={HOME_STATS.earningsToday.value}
             kind="icon"
             icon={HandCoins}
-            iconBg="#F5E7D3"
-            iconColor="#B07E2E"
+            iconBg="var(--color-peach)"
+            iconColor="var(--color-gold-icon)"
           />
         </motion.div>
         <motion.div {...rise(3)}>
@@ -94,11 +89,11 @@ export default function Home({ onAskSage }) {
 
       {/* Baris tengah: Balance / Earnings / Profil */}
       <div className="mt-[18px] grid grid-cols-1 gap-[18px] xl:grid-cols-12">
-        <motion.section {...rise(4)} className="card relative overflow-hidden p-6 xl:col-span-6">
+        <motion.section {...rise(4)} className="relative overflow-hidden rounded-card bg-surface p-6 shadow-card xl:col-span-6">
           <div className="flex items-center gap-2">
             <h3 className="text-[15px] font-bold tracking-tight text-ink">Balance</h3>
             <CircleCheck size={14} className="text-sage" />
-            <span className="text-xs text-[#5C665E]">On track</span>
+            <span className="text-xs text-ink-2">On track</span>
             <button type="button" className="ml-auto flex items-center gap-1 text-[13px] font-medium text-muted hover:text-ink">
               Monthly <ChevronDown size={14} />
             </button>
@@ -112,27 +107,27 @@ export default function Home({ onAskSage }) {
           </div>
         </motion.section>
 
-        <motion.section {...rise(5)} className="card flex flex-col p-6 xl:col-span-3">
+        <motion.section {...rise(5)} className="flex flex-col rounded-card bg-surface p-6 shadow-card xl:col-span-3">
           <div className="flex items-baseline justify-between gap-2">
             <h3 className="text-[15px] font-bold tracking-tight text-ink">Earnings</h3>
             <span className="text-[11px] text-muted">{EARNINGS.label}</span>
           </div>
           <p className="mt-2 text-[22px] font-extrabold tracking-tight text-ink">{EARNINGS.value}</p>
-          <p className="mt-1 text-xs text-[#5C665E]">{EARNINGS.note}</p>
+          <p className="mt-1 text-xs text-ink-2">{EARNINGS.note}</p>
           <div className="mt-auto pt-2">
             <Gauge value={EARNINGS.gauge} caption={EARNINGS.goal} size={196} />
           </div>
         </motion.section>
 
-        <motion.section {...rise(6)} className="card flex flex-col items-center p-6 text-center xl:col-span-3">
-          <div className="rounded-full p-[5px] ring-1 ring-[#D8DCD2]">
-            <div className="rounded-full bg-[#F1E8D8] p-1.5">
+        <motion.section {...rise(6)} className="flex flex-col items-center rounded-card bg-surface p-6 text-center shadow-card xl:col-span-3">
+          <div className="rounded-full p-[5px] ring-1 ring-avatar-ring">
+            <div className="rounded-full bg-avatar-bg p-1.5">
               <AvatarMemoji size={76} />
             </div>
           </div>
           <h3 className="mt-3.5 text-base font-bold tracking-tight text-ink">{USER.name}</h3>
           <p className="text-xs text-muted">{USER.email}</p>
-          <div className="mt-5 grid w-full grid-cols-3 border-t border-[#F0F0EB] pt-4">
+          <div className="mt-5 grid w-full grid-cols-3 border-t border-line pt-4">
             {[
               ['Projects', USER.projects],
               ['Followers', USER.followers],
@@ -149,35 +144,35 @@ export default function Home({ onAskSage }) {
 
       {/* Baris bawah: kartu kredit / transfer / keamanan */}
       <div className="mt-[18px] grid grid-cols-1 gap-[18px] xl:grid-cols-12">
-        <motion.section {...rise(7)} className="card grid gap-5 p-6 sm:grid-cols-2 xl:col-span-6">
+        <motion.section {...rise(7)} className="grid gap-5 rounded-card bg-surface p-6 shadow-card sm:grid-cols-2 xl:col-span-6">
           <div className="flex flex-col">
             <h3 className="text-base font-bold leading-snug tracking-tight text-ink">
               Available Credit Card
               <br />
               in Wallet
             </h3>
-            <p className="mt-2.5 text-[12.5px] leading-relaxed text-[#5C665E]">
+            <p className="mt-2.5 text-[12.5px] leading-relaxed text-ink-2">
               3 cards linked to payouts and expenses. Hover to fan the stack, tap any card to bring it to the front.
             </p>
             <button
               type="button"
-              className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-full bg-[#6A8775] px-4 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_22px_rgba(106,135,117,0.35)] transition-transform hover:scale-[1.03] active:scale-95"
+              className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-full bg-sage-700 px-4 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_22px_rgba(106,135,117,0.35)] transition-transform hover:scale-[1.03] active:scale-95"
             >
               Add New Card <Plus size={14} />
             </button>
           </div>
-          <div className="flex items-center justify-center rounded-[18px] bg-[#F3F1EF] px-4 py-5">
+          <div className="flex items-center justify-center rounded-[18px] bg-surface-soft px-4 py-5">
             <CreditStack cards={CARDS} compact />
           </div>
         </motion.section>
 
-        <motion.section {...rise(8)} className="card p-6 xl:col-span-3">
+        <motion.section {...rise(8)} className="rounded-card bg-surface p-6 shadow-card xl:col-span-3">
           <div className="flex items-center justify-between">
             <h3 className="text-[15px] font-bold tracking-tight text-ink">Your Transfers</h3>
             <button
               type="button"
               aria-label="See all transfers"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F1F1EC] text-[#5C665E] transition-colors hover:bg-[#E7EAE3] hover:text-ink"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-chip text-ink-2 transition-colors hover:bg-count hover:text-ink"
             >
               <ArrowUpRight size={15} />
             </button>
@@ -185,14 +180,14 @@ export default function Home({ onAskSage }) {
           <ul className="mt-4 flex flex-col gap-4">
             {HOME_TRANSFERS.map((t) => (
               <li key={t.name} className="flex items-center gap-3">
-                <span className="h-[26px] w-[3px] rounded-full bg-[#1D1C1F]" />
+                <span className="h-[26px] w-[3px] rounded-full bg-black" />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] font-semibold text-ink">{t.name}</p>
                   <p className="text-[11px] text-muted">{t.time}</p>
                 </div>
                 <span
                   className={`rounded-full px-2 py-1 text-[11px] font-bold ${
-                    t.dir === 'in' ? 'bg-[#E3EDE2] text-[#4E7A5A]' : 'bg-[#F8E6E1] text-[#C65A4A]'
+                    t.dir === 'in' ? 'bg-up-bg text-up-text' : 'bg-down-bg text-down-text'
                   }`}
                 >
                   {t.amount}
@@ -202,15 +197,15 @@ export default function Home({ onAskSage }) {
           </ul>
         </motion.section>
 
-        <motion.section {...rise(9)} className="card flex flex-col items-center p-6 text-center xl:col-span-3">
-          <span className="mt-1 flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#E4EAE1] text-sage">
+        <motion.section {...rise(9)} className="flex flex-col items-center rounded-card bg-surface p-6 text-center shadow-card xl:col-span-3">
+          <span className="mt-1 flex h-[52px] w-[52px] items-center justify-center rounded-full bg-sage-100 text-sage">
             <RotateCw size={24} />
           </span>
           <h3 className="mt-3.5 text-[15px] font-bold tracking-tight text-ink">Keep you safe!</h3>
           <p className="mt-1 text-xs text-muted">Update your security password</p>
           <button
             type="button"
-            className="mt-4 rounded-full bg-[#6A8775] px-4 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_22px_rgba(106,135,117,0.35)] transition-transform hover:scale-[1.03] active:scale-95"
+            className="mt-4 rounded-full bg-sage-700 px-4 py-2.5 text-[13px] font-semibold text-white shadow-[0_10px_22px_rgba(106,135,117,0.35)] transition-transform hover:scale-[1.03] active:scale-95"
           >
             Update Your Security
           </button>

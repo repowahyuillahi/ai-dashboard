@@ -1,9 +1,12 @@
 // BalanceChart — grafik garis area besar "Balance".
 // Bentuk khas: naik landai → turun tajam di tengah → naik lagi berombak sampai akhir.
 // Titik data internal menghasilkan bentuk tersebut; dirender responsif (viewBox 720×height).
+// Garis tergambar masuk (draw-in) saat komponen tampil.
 
 import { useId } from 'react'
-import { smoothPath } from './Sparkline'
+import { motion } from 'framer-motion'
+import { smoothPath } from '../../lib/chart'
+import { EASE } from '../../lib/motion'
 
 // 24 titik: indeks 0-8 naik landai, 9-11 jatuh tajam, 12-23 naik berombak.
 const DATA = [
@@ -40,27 +43,35 @@ export default function BalanceChart({ height = 210, className = '' }) {
     >
       <defs>
         <linearGradient id={`bal-${gid}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#5F7161" stopOpacity="0.28" />
-          <stop offset="60%" stopColor="#5F7161" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#5F7161" stopOpacity="0" />
+          <stop offset="0%" style={{ stopColor: 'var(--color-sage-900)' }} stopOpacity="0.28" />
+          <stop offset="60%" style={{ stopColor: 'var(--color-sage-900)' }} stopOpacity="0.08" />
+          <stop offset="100%" style={{ stopColor: 'var(--color-sage-900)' }} stopOpacity="0" />
         </linearGradient>
       </defs>
-      <path d={area} fill={`url(#bal-${gid})`} />
-      <path
+      <motion.path
+        d={area}
+        fill={`url(#bal-${gid})`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.25 }}
+      />
+      <motion.path
         d={line}
         fill="none"
-        stroke="#42503F"
+        style={{ stroke: 'var(--color-chart-line)' }}
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1.1, ease: EASE }}
       />
       <circle
         cx={points[points.length - 1].x}
         cy={points[points.length - 1].y}
         r="4.5"
-        fill="#5F7161"
-        stroke="#fff"
+        style={{ fill: 'var(--color-sage-900)', stroke: 'var(--color-surface)' }}
         strokeWidth="2"
         vectorEffect="non-scaling-stroke"
       />

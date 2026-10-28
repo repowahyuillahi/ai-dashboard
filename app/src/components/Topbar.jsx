@@ -10,7 +10,7 @@ export function SageMark({ size = 36, className = '' }) {
   const rays = Array.from({ length: 12 }, (_, i) => (i * Math.PI) / 6)
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" className={className} aria-hidden="true">
-      <g stroke="#5F7161" strokeWidth="3.4" strokeLinecap="round">
+      <g className="stroke-sage-900" strokeWidth="3.4" strokeLinecap="round">
         {rays.map((a, i) => (
           <line
             key={i}
@@ -21,7 +21,7 @@ export function SageMark({ size = 36, className = '' }) {
           />
         ))}
       </g>
-      <circle cx="24" cy="24" r="3.4" fill="#5F7161" />
+      <circle cx="24" cy="24" r="3.4" className="fill-sage-900" />
     </svg>
   )
 }
@@ -55,8 +55,8 @@ export default function Topbar({ title, sub, onSearchFocus }) {
           aria-label="Search or ask Sage"
         >
           <span className="flex-1 truncate text-[13px] text-muted">Search or ask Sage...</span>
-          <kbd className="rounded-md bg-[#F1F1EC] px-1.5 py-0.5 text-[10.5px] font-semibold text-muted">⌘K</kbd>
-          <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-[#1D1C1F] text-white transition-transform group-hover:scale-105">
+          <kbd className="rounded-md bg-chip px-1.5 py-0.5 text-[10.5px] font-semibold text-muted">⌘K</kbd>
+          <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-black text-white transition-transform group-hover:scale-105">
             <Search size={15} />
           </span>
         </button>
@@ -67,7 +67,7 @@ export default function Topbar({ title, sub, onSearchFocus }) {
           className="relative flex h-[46px] w-[46px] items-center justify-center rounded-full bg-white text-ink shadow-[0_10px_28px_rgba(96,100,84,0.08)] transition-transform hover:scale-105"
         >
           <MessageCircle size={19} />
-          <span className="absolute right-[9px] top-[9px] h-2 w-2 rounded-full bg-[#E4573D] ring-2 ring-white" />
+          <span className="absolute right-[9px] top-[9px] h-2 w-2 rounded-full bg-danger-dot ring-2 ring-white" />
         </button>
 
         <button
@@ -76,7 +76,7 @@ export default function Topbar({ title, sub, onSearchFocus }) {
           className="relative flex h-[46px] w-[46px] items-center justify-center rounded-full bg-white text-ink shadow-[0_10px_28px_rgba(96,100,84,0.08)] transition-transform hover:scale-105"
         >
           <Bell size={19} />
-          <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#5F7161] px-1 text-[10px] font-bold text-white ring-2 ring-[#EFEEE9]">
+          <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-sage-900 px-1 text-[10px] font-bold text-white ring-2 ring-cream">
             9
           </span>
         </button>

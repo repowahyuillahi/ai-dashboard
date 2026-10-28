@@ -1,5 +1,7 @@
 // TransferList — daftar riwayat transfer dengan ikon arah dalam lingkaran pastel,
-// nama + konteks, waktu, dan chip nominal berwarna sesuai arah. Filter All/In/Out opsional.
+// nama + konteks, waktu, dan chip nominal. Warna arah memakai SATU set kanonis
+// token up/down (index.css) — sama seperti chip di Home & Wallet.
+// Filter All/In/Out opsional.
 
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -36,7 +38,7 @@ export default function TransferList({ items = DEFAULT_ITEMS, withFilter = false
               type="button"
               onClick={() => setMode(f.key)}
               className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                mode === f.key ? 'bg-sage text-white' : 'bg-[#EFEFEA] text-muted hover:text-ink'
+                mode === f.key ? 'bg-sage text-white' : 'bg-chip text-muted hover:text-ink'
               }`}
             >
               {f.label}
@@ -56,14 +58,12 @@ export default function TransferList({ items = DEFAULT_ITEMS, withFilter = false
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
                 transition={{ duration: 0.18 }}
-                className="flex items-center gap-3 border-b border-[#F0F0EB] py-3 last:border-0 last:pb-0 first:pt-0"
+                className="flex items-center gap-3 border-b border-line py-3 last:border-0 last:pb-0 first:pt-0"
               >
                 <span
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-                  style={{
-                    background: isIn ? '#E3EEDF' : '#Fbe7E2',
-                    color: isIn ? '#4C7A45' : '#C4553B',
-                  }}
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+                    isIn ? 'bg-up-bg text-up-text' : 'bg-down-bg text-down-text'
+                  }`}
                 >
                   {isIn ? <ArrowDownLeft size={17} /> : <ArrowUpRight size={17} />}
                 </span>
@@ -74,11 +74,9 @@ export default function TransferList({ items = DEFAULT_ITEMS, withFilter = false
                 <div className="flex shrink-0 flex-col items-end gap-1">
                   <span className="text-[11px] font-medium text-muted">{it.time}</span>
                   <span
-                    className="rounded-full px-2 py-0.5 text-xs font-bold"
-                    style={{
-                      background: isIn ? '#E3EEDF' : '#FBE7E2',
-                      color: isIn ? '#3F7038' : '#B84A30',
-                    }}
+                    className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                      isIn ? 'bg-up-bg text-up-text' : 'bg-down-bg text-down-text'
+                    }`}
                   >
                     {isIn ? '+' : '-'}${fmt(Math.abs(it.amount))}
                   </span>

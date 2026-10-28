@@ -1,8 +1,9 @@
-// ActivityCard — varian kartu statistik hijau tua penuh (sage) dengan teks putih
-// dan Sparkline putih di kanan. Varian tetap sesuai referensi: $116.99 net profit today.
+// ActivityCard — varian kartu statistik hijau tua penuh (gradien sage spec §1.2:
+// #789581 → #5F7C6A) dengan teks putih dan Sparkline putih di kanan.
 
 import { motion } from 'framer-motion'
 import Sparkline from './charts/Sparkline'
+import { hoverLift } from '../lib/motion'
 
 export default function ActivityCard({
   value = '$116.99',
@@ -12,10 +13,9 @@ export default function ActivityCard({
 }) {
   return (
     <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ type: 'spring', stiffness: 320, damping: 22 }}
-      className={`flex items-center justify-between gap-3 rounded-[24px] p-5 text-white shadow-[0_8px_24px_rgba(95,113,97,0.35)] ${className}`}
-      style={{ background: 'linear-gradient(135deg, #63765F 0%, #5F7161 55%, #52634F 100%)' }}
+      {...hoverLift}
+      className={`flex items-center justify-between gap-3 rounded-card p-5 text-white shadow-[0_8px_24px_rgba(95,113,97,0.35)] ${className}`}
+      style={{ background: 'linear-gradient(135deg, var(--color-sage-grad-a) 0%, var(--color-sage-grad-b) 100%)' }}
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
@@ -28,11 +28,11 @@ export default function ActivityCard({
             Live
           </span>
         </div>
-        <p className="mt-1 text-[26px] font-bold leading-none tracking-tight">{value}</p>
+        <p className="mt-1 text-[20px] font-extrabold leading-none tracking-tight">{value}</p>
         <p className="mt-1.5 text-xs text-white/70">{sub}</p>
       </div>
       <div className="shrink-0">
-        <Sparkline data={spark} width={92} height={40} stroke="#FFFFFF" strokeWidth={2.2} />
+        <Sparkline data={spark} width={92} height={40} stroke="var(--color-surface)" strokeWidth={2.2} />
       </div>
     </motion.div>
   )

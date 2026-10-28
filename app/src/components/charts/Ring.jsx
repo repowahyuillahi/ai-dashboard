@@ -1,11 +1,12 @@
 // Ring — ring progres okupansi kecil (SVG circle) dengan persen di tengah.
+// Warna baku spec §1.5: lintasan #E7EDE6, progres #4E6B58 (token ring-*).
 
 export default function Ring({
   value = 82,
   size = 84,
   stroke = 8,
-  color = '#5F7161',
-  track = '#E4E8DF',
+  color = 'var(--color-ring-progress)',
+  track = 'var(--color-ring-track)',
   label = null,
 }) {
   const v = Math.max(0, Math.min(100, value))
@@ -15,13 +16,13 @@ export default function Ring({
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={track} strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" style={{ stroke: track }} strokeWidth={stroke} />
         <circle
           cx={size / 2}
           cy={size / 2}
           r={r}
           fill="none"
-          stroke={color}
+          style={{ stroke: color }}
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={c}

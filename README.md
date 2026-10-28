@@ -24,11 +24,34 @@ cards, a floating pill sidebar, and butter-smooth motion throughout.
   (ask about *occupancy*, *revenue*, *balance*, *properties*…)
 - **⌘K command palette** — search pages, properties and actions; the topbar
   search pill opens it too
-- **Page transitions** — blur-crossfade between pages, staggered card entrances,
+- **Page transitions** — light opacity/slide crossfade between pages (each page
+  is code-split with `React.lazy`), staggered card entrances,
   count-up numbers on Properties, hover lift (`y: -5`) on cards
 - **Pure-SVG visuals** — charts, gauge, rings and building illustrations are
   hand-drawn SVG components; no image assets
 - **Lucide icons** everywhere, **Plus Jakarta Sans** typography
+
+## Cara mengganti tema
+
+Semua warna, radius kartu, dan bayangan kartu didefinisikan sebagai token di
+blok `@theme` dalam `app/src/index.css` (sumber nilainya: `DESIGN_SPEC.md` §1).
+Untuk mengubah tema, cukup edit nilai token di sana — misalnya `--color-cream`
+untuk latar, `--color-sage-900`/`--color-sage-700` untuk aksen hijau, atau
+`--radius-card`/`--shadow-card` untuk bentuk kartu — lalu build ulang.
+Komponen tidak memakai hex literal; semuanya merujuk token
+(`bg-surface-soft`, `text-ink-2`, `bg-up-bg`, `rounded-card`, `shadow-card`, …).
+Satu-satunya pengecualian adalah palet ilustrasi per properti di
+`app/src/data/properties.js`, yang memang data.
+
+## Cara menambah halaman
+
+1. Buat komponen halaman di `app/src/pages/` (ikuti pola halaman yang ada:
+   preset gerak dari `app/src/lib/motion.js`, data dari `app/src/data/`).
+2. Daftarkan di `app/src/App.jsx`: impor dengan `React.lazy()`, tambahkan ke
+   peta `PAGE_COMPONENTS`, dan tambahkan judul/subjudulnya ke `PAGES` di
+   `app/src/data/sage.js`.
+3. Tambahkan ikon navigasinya ke daftar `NAV` di
+   `app/src/components/Sidebar.jsx` bila halaman perlu muncul di rail samping.
 
 ## Run locally
 
@@ -44,8 +67,10 @@ npm run deploy     # publish dist to GitHub Pages (gh-pages branch)
 
 ```
 app/src/
-  App.jsx               shell: topbar, sidebar, routing state, ⌘K, Sage panel
-  data.js               all demo data (properties, transfers, cards, stats)
+  App.jsx               shell: topbar, sidebar, lazy routing, ⌘K, Sage panel
+  data/                 demo data per domain (properties, wallet, home, guests,
+                        bookings, analytics, sage) + index.js re-export
+  lib/                  motion.js (preset gerak) & chart.js (helper SVG)
   components/
     Topbar.jsx  Sidebar.jsx  StatsCard.jsx  ActivityCard.jsx
     CreditStack.jsx  TransferList.jsx  BuildingArt.jsx  AvatarMemoji.jsx

@@ -1,12 +1,118 @@
 @import "tailwindcss";
 
+/* Token desain — sumber kebenaran: DESIGN_SPEC.md §1.
+   Semua warna komponen harus merujuk token di sini (utility Tailwind
+   seperti bg-surface-soft / text-ink-2 / rounded-card / shadow-card),
+   bukan hex literal di JSX. */
 @theme {
-  --color-cream: #efeee9;
-  --color-sage: #5f7161;
-  --color-sage-2: #778873;
+  /* 1.1 Warna dasar */
+  --color-cream: #efeee9; /* latar halaman (--bg, niat desain spec) */
+  --color-surface: #ffffff;
+  --color-surface-soft: #f3f1ef;
+  --color-inset-sage: #ebede8;
   --color-ink: #1e2420;
-  --color-muted: #71766f;
-  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-black: #1d1c1f;
+  --color-ink-2: #5c665e;
+  --color-muted: #979d95;
+  --color-hairline: #efede8;
+
+  /* 1.2 Hijau sage (merek) */
+  --color-sage: #5f7161; /* alias lama = sage-900 */
+  --color-sage-900: #5f7161;
+  --color-sage-700: #6a8775;
+  --color-sage-500: #778873;
+  --color-sage-2: #778873; /* alias lama = sage-500 */
+  --color-sage-grad-a: #789581;
+  --color-sage-grad-b: #5f7c6a;
+  --color-sage-100: #e4eae1;
+  --color-sage-chip: #4e7a5a;
+
+  /* 1.3 Chip naik / turun — SATU set kanonis untuk semua komponen */
+  --color-up-bg: #e3ede2;
+  --color-up-text: #4e7a5a;
+  --color-down-bg: #f8e6e1;
+  --color-down-text: #c65a4a;
+  --color-peach: #f5e7d3;
+
+  /* Netral tambahan yang dipakai komponen */
+  --color-line: #f0f0eb; /* border halus panel & kartu */
+  --color-chip: #f1f1ec; /* latar chip / kbd netral */
+  --color-input: #f5f5f0; /* latar input panel Sage */
+  --color-tile: #f9f8f5; /* tile baris di halaman pendukung */
+  --color-count: #e7eae3; /* lencana hitungan & hover lembut */
+  --color-stat-chip: #edf1ea; /* chip ikon MiniStat (spec §6.1) */
+  --color-icon-idle: #6b7268; /* ikon sidebar nonaktif (spec §3.2) */
+  --color-avatar-ring: #d8dcd2;
+  --color-avatar-bg: #f1e8d8;
+  --color-sidebar-avatar: #f5efe3;
+  --color-star: #f2b33d;
+  --color-danger-dot: #e4573d; /* titik merah tombol pesan */
+  --color-gold-text: #9a6e25; /* teks di atas peach */
+  --color-gold-icon: #b07e2e; /* ikon kantong uang di atas peach */
+  --color-trash: #b9bdb4;
+  --color-hover-soft: #f6f8f4;
+  --color-border-soft: #cbd5c6;
+  --color-palette-active: #f1f4ec;
+  --color-palette-hover: #f7f7f2;
+  --color-palette-chip: #eceee6;
+
+  /* Grafik */
+  --color-gauge-track: #e6ede4;
+  --color-gauge-a: #8fae94;
+  --color-ring-track: #e7ede6;
+  --color-ring-progress: #4e6b58;
+  --color-chart-line: #42503f;
+  --color-bars-faded: #c9d2c6;
+
+  /* Kartu dasar: radius & bayangan baku (pengganti class .card) */
+  --radius-card: 24px;
+  --shadow-card:
+    0 1px 2px rgba(30, 36, 32, 0.04),
+    0 8px 24px rgba(30, 36, 32, 0.06);
+
+  --font-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Variabel non-utilitas: palet ilustrasi avatar, orb Sage, kartu kredit.
+   Dipakai lewat var(--…) dari style/SVG agar hex tetap tinggal di berkas ini. */
+:root {
+  --avatar-cream: #f0e7d8;
+  --avatar-skin: #d29a68;
+  --avatar-skin-dark: #c68b59;
+  --avatar-hair: #23211f;
+  --avatar-glasses: #e8823a;
+  --avatar-eye: #26221f;
+  --avatar-nose: #b57a45;
+  --avatar-smile: #8a5326;
+  --avatar-cheek: #e39b6b;
+
+  --orb-sky: #7dd3fc;
+  --orb-indigo: #818cf8;
+  --orb-violet: #a855f7;
+  --orb-cyan: #22d3ee;
+  --orb-shadow: rgba(129, 140, 248, 0.5);
+  --orb-inset: rgba(34, 211, 238, 0.35);
+
+  --mc-red: #eb001b;
+  --mc-yellow: #f79e1b;
+  --mc-orange: #ff5f00;
+  --chip-gold-a: #f3d27a;
+  --chip-gold-b: #d9a93f;
+
+  --card-glass-a: #fdfdfb;
+  --card-glass-b: #edeee8;
+  --card-glass-c: #dde3d8;
+  --card-sage-a: #71826c;
+  --card-sage-b: #5f7161;
+  --card-sage-c: #4c5d4e;
+  --card-black-a: #343a36;
+  --card-black-b: #1e2420;
+  --card-black-c: #12150f;
+
+  /* aksen tetap ilustrasi BuildingArt */
+  --art-ground: #6c7a63;
+  --art-door: #37422f;
+  --art-trunk: #5c4a36;
 }
 
 body {
@@ -16,11 +122,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Kartu dasar proyek: putih, sudut besar, bayangan lembut */
-.card {
-  background: #fff;
-  border-radius: 24px;
-  box-shadow:
-    0 1px 2px rgba(30, 36, 32, 0.04),
-    0 8px 24px rgba(30, 36, 32, 0.06);
+/* Kedip orb Sage (dipakai SageOrb di AskSage & halaman Home) */
+@keyframes sage-blink {
+  0%, 88%, 100% { transform: scaleY(1); }
+  92%, 96% { transform: scaleY(0.12); }
+}
+.sage-eyes {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: sage-blink 4.2s ease-in-out infinite;
 }
