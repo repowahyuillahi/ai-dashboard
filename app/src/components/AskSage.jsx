@@ -5,7 +5,7 @@
 //     dan form tanya yang berfungsi lokal (bank jawaban di data/sage.js).
 
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useDragControls } from 'framer-motion'
 import { SendHorizontal, X } from 'lucide-react'
 import { SAGE_SEED_MESSAGES, sageReply } from '../data'
 
@@ -34,14 +34,33 @@ export function SageOrb({ size = 44 }) {
 }
 
 export function OrbButton({ onClick, label = 'Ask Sage' }) {
+  // Jarak seret terakhir — klik yang mengakhiri seretan tidak boleh membuka panel.
+  const dragDist = useRef(0)
   return (
     <motion.button
       type="button"
-      onClick={onClick}
-      whileHover={{ scale: 1.04, y: -2 }}
+      drag
+      dragMomentum={false}
+      dragElastic={0.08}
+      onDragStart={() => {
+        dragDist.current = 0
+      }}
+      onDragEnd={(_, info) => {
+        dragDist.current = Math.hypot(info.offset.x, info.offset.y)
+      }}
+      onClick={() => {
+        if (dragDist.current > 6) {
+          dragDist.current = 0
+          return
+        }
+        onClick?.()
+      }}
+      whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.97 }}
+      whileDrag={{ scale: 1.05 }}
       transition={{ type: 'spring', stiffness: 340, damping: 20 }}
-      className="inline-flex items-center gap-3 rounded-full bg-ink py-2 pl-2 pr-5 text-white shadow-[0_14px_32px_rgba(30,36,32,0.35)]"
+      className="inline-flex cursor-grab touch-none items-center gap-3 rounded-full bg-ink py-2 pl-2 pr-5 text-white shadow-[0_14px_32px_rgba(30,36,32,0.35)] active:cursor-grabbing"
+      title="Seret untuk memindahkan, klik untuk membuka Sage"
     >
       <SageOrb size={44} />
       <span className="text-[15px] font-semibold tracking-tight">{label}</span>
@@ -52,6 +71,9 @@ export function OrbButton({ onClick, label = 'Ask Sage' }) {
 // ---------- Panel chat ----------
 
 export function SagePanel({ onClose, className = '' }) {
+  // Panel digeser lewat header-nya saja (dragListener mati), supaya isi chat,
+  // input, dan tombol tetap bisa dipakai seperti biasa.
+  const dragControls = useDragControls()
   const [messages, setMessages] = useState(() =>
     SAGE_SEED_MESSAGES.map((m, i) => ({ ...m, id: `seed-${i}` })),
   )
@@ -89,6 +111,11 @@ export function SagePanel({ onClose, className = '' }) {
 
   return (
     <motion.div
+      drag
+      dragListener={false}
+      dragControls={dragControls}
+      dragMomentum={false}
+      dragElastic={0.06}
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 24, scale: 0.97 }}
@@ -98,8 +125,12 @@ export function SagePanel({ onClose, className = '' }) {
       role="dialog"
       aria-label="Sage AI chat"
     >
-      {/* header */}
-      <div className="flex items-center gap-3 border-b border-line px-5 py-4">
+      {/* header — pegangan seret panel */}
+      <div
+        onPointerDown={(e) => dragControls.start(e)}
+        className="flex cursor-grab touch-none select-none items-center gap-3 border-b border-line px-5 py-4 active:cursor-grabbing"
+        title="Seret untuk memindahkan panel"
+      >
         <SageOrb size={36} />
         <div className="flex-1">
           <p className="flex items-center gap-2 text-[15px] font-bold tracking-tight text-ink">
@@ -115,6 +146,7 @@ export function SagePanel({ onClose, className = '' }) {
           <button
             type="button"
             onClick={onClose}
+            onPointerDown={(e) => e.stopPropagation()}
             className="flex h-8 w-8 items-center justify-center rounded-full bg-chip text-muted transition-colors hover:text-ink"
             aria-label="Tutup Sage"
           >

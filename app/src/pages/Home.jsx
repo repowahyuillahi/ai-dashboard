@@ -1,6 +1,7 @@
 // Halaman Home — "Hey, Codexr!": baris 4 kartu statistik, baris Balance/Earnings/Profil,
 // baris kartu kredit/transfer/keamanan. Orb Sage besar melayang di atas kartu tengah.
 
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import {
   Users, HandCoins, CircleCheck, ChevronDown, Plus, ArrowUpRight, RotateCw,
@@ -34,21 +35,44 @@ function FloatingTile({ data, className = '' }) {
 }
 
 export default function Home({ onAskSage }) {
+  // Wadah halaman = batas seret orb; jarak seret dipakai membedakan seret vs klik.
+  const containerRef = useRef(null)
+  const dragDist = useRef(0)
   return (
-    <div className="relative">
-      {/* Orb Sage besar + gelembung ucapan (ciri khas halaman Home di video) */}
+    <div className="relative" ref={containerRef}>
+      {/* Orb Sage besar + gelembung ucapan (ciri khas halaman Home di video).
+          Orb bisa diseret bebas di dalam halaman: seretan ditangani div luar,
+          animasi melayang tetap di tombol dalam agar transform-nya tidak bertabrakan. */}
       <motion.div
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{ opacity: 1, scale: 1 }}
+        whileDrag={{ scale: 1.06 }}
         transition={{ delay: 0.55, type: 'spring', stiffness: 160, damping: 15 }}
-        className="absolute left-1/2 top-[300px] z-30 hidden -translate-x-1/3 xl:block"
+        drag
+        dragConstraints={containerRef}
+        dragMomentum={false}
+        dragElastic={0.08}
+        onDragStart={() => {
+          dragDist.current = 0
+        }}
+        onDragEnd={(_, info) => {
+          dragDist.current = Math.hypot(info.offset.x, info.offset.y)
+        }}
+        className="absolute left-1/2 top-[300px] z-30 hidden -translate-x-1/3 cursor-grab touch-none active:cursor-grabbing xl:block"
+        title="Seret untuk memindahkan, klik untuk membuka Sage"
       >
         <motion.button
           type="button"
-          onClick={onAskSage}
+          onClick={() => {
+            if (dragDist.current > 6) {
+              dragDist.current = 0
+              return
+            }
+            onAskSage?.()
+          }}
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
-          className="relative block rounded-full"
+          className="relative block cursor-grab rounded-full active:cursor-grabbing"
           aria-label="Ask Sage"
           style={{ filter: 'drop-shadow(0 22px 34px rgba(99,91,255,0.45))' }}
         >
